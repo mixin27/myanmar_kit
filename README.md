@@ -1,39 +1,108 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# myanmar_kit
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+`myanmar_kit` is a Flutter package for apps that need to render, format, and
+edit Myanmar text mixed with Latin text.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+It focuses on:
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+- Myanmar-aware text sizing with `MMText`
+- Grapheme-safe text utilities
+- Heuristic Zawgyi detection and conversion
+- Myanmar digit conversion, NRC formatting, and lightweight collation helpers
+- A grapheme-safe text field wrapper
 
-## Features
+## Why this package exists
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Myanmar text has a few practical problems in Flutter apps:
 
-## Getting started
+- Myanmar fonts often render visually taller than Latin fonts at the same size.
+- Zawgyi text still appears in real-world data, even though it is not Unicode.
+- Grapheme clusters should be treated atomically for editing and truncation.
+- Myanmar text commonly omits spaces, which makes line breaking harder.
+- Myanmar digits and NRC numbers need dedicated formatting helpers.
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+`myanmar_kit` packages those concerns into a small public API.
 
-## Usage
+## Installation
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  myanmar_kit: ^0.0.1
 ```
 
-## Additional information
+## Quick Start
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+Wrap your app with `MMTextConfig`:
+
+```dart
+MaterialApp(
+  home: MMTextConfig(
+    myanmarFont: 'Noto Sans Myanmar',
+    latinFont: 'Roboto',
+    child: const HomePage(),
+  ),
+);
+```
+
+Use `MMText` instead of `Text`:
+
+```dart
+MMText(
+  text: 'Hello မြန်မာ',
+  style: const TextStyle(fontSize: 24),
+)
+```
+
+Use `MMTextField` for Myanmar-safe editing:
+
+```dart
+MMTextField(
+  decoration: const InputDecoration(labelText: 'Myanmar text'),
+)
+```
+
+## Public API
+
+### Text widgets
+
+- `MMText`
+- `MMText.rich`
+- `MMRichText`
+- `MMTextField`
+- `MMTextConfig`
+
+### Encoding
+
+- `isLikelyZawgyi`
+- `zawgyiConfidence`
+- `zawgyiToUnicode`
+- `unicodeToZawgyi`
+
+### Text utilities
+
+- `graphemeLength`
+- `toGraphemeClusters`
+- `safeTruncate`
+- `insertBreakHints`
+
+### Formatting
+
+- `toMyanmarDigits`
+- `toArabicDigits`
+- `compareMyanmar`
+- `isValidNrc`
+- `formatNrc`
+
+## Known limitations
+
+- Zawgyi detection is heuristic, not deterministic.
+- Zawgyi conversion is a best-effort ordered mapping, not a full linguistic
+  engine.
+- The line-breaking helper inserts hints heuristically and is not ICU-grade.
+- Myanmar collation here is lightweight and does not replace full ICU collation.
+- Font-metric scaling depends on the requested fonts being loaded and available.
+
+## Example
+
+Run the example app in `example/lib/main.dart` to see side-by-side comparisons
+and utility outputs.
