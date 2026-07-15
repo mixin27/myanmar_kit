@@ -3,6 +3,12 @@ description: "Myanmar-aware text widgets and utilities for Flutter."
 version: 0.0.1
 repository: https://github.com/mixin27/myanmar_kit
 issue_tracker: https://github.com/mixin27/myanmar_kit/issues
+topics:
+  - flutter
+  - text
+  - typography
+  - myanmar
+  - localization
 
 environment:
   sdk: ^3.12.2
@@ -20,3 +26,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+screenshots:
+  - description: Demo One
+    path: screenshots/demo1.png
+  - description: Demo Two
+    path: screenshots/demo2.png
