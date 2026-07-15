@@ -40,11 +40,16 @@ class MMTextField extends StatelessWidget {
     this.readOnly = false,
     this.showCursor,
     this.autofocus = false,
+    this.keyboardAppearance,
     this.obscureText = false,
+    this.obscuringCharacter = '•',
     this.autocorrect = true,
     this.smartDashesType,
     this.smartQuotesType,
     this.enableSuggestions = true,
+    this.enableIMEPersonalizedLearning = true,
+    this.cursorOpacityAnimates,
+    this.mouseCursor,
     this.maxLines = 1,
     this.minLines,
     this.expands = false,
@@ -59,6 +64,7 @@ class MMTextField extends StatelessWidget {
     this.cursorHeight,
     this.cursorRadius,
     this.cursorColor,
+    this.cursorErrorColor,
     this.selectionControls,
     this.scrollPadding = const EdgeInsets.all(20.0),
     this.enableInteractiveSelection,
@@ -107,11 +113,16 @@ class MMTextField extends StatelessWidget {
   final bool readOnly;
   final bool? showCursor;
   final bool autofocus;
+  final Brightness? keyboardAppearance;
   final bool obscureText;
+  final String obscuringCharacter;
   final bool autocorrect;
   final SmartDashesType? smartDashesType;
   final SmartQuotesType? smartQuotesType;
   final bool enableSuggestions;
+  final bool enableIMEPersonalizedLearning;
+  final bool? cursorOpacityAnimates;
+  final MouseCursor? mouseCursor;
   final int? maxLines;
   final int? minLines;
   final bool expands;
@@ -126,6 +137,7 @@ class MMTextField extends StatelessWidget {
   final double? cursorHeight;
   final Radius? cursorRadius;
   final Color? cursorColor;
+  final Color? cursorErrorColor;
   final TextSelectionControls? selectionControls;
   final EdgeInsets scrollPadding;
   final bool? enableInteractiveSelection;
@@ -163,11 +175,16 @@ class MMTextField extends StatelessWidget {
         readOnly: readOnly,
         showCursor: showCursor,
         autofocus: autofocus,
+        keyboardAppearance: keyboardAppearance,
         obscureText: obscureText,
+        obscuringCharacter: obscuringCharacter,
         autocorrect: autocorrect,
         smartDashesType: smartDashesType,
         smartQuotesType: smartQuotesType,
         enableSuggestions: enableSuggestions,
+        enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
+        cursorOpacityAnimates: cursorOpacityAnimates,
+        mouseCursor: mouseCursor,
         maxLines: maxLines,
         minLines: minLines,
         expands: expands,
@@ -182,6 +199,7 @@ class MMTextField extends StatelessWidget {
         cursorHeight: cursorHeight,
         cursorRadius: cursorRadius,
         cursorColor: cursorColor,
+        cursorErrorColor: cursorErrorColor,
         selectionControls: selectionControls,
         scrollPadding: scrollPadding,
         enableInteractiveSelection: enableInteractiveSelection,
@@ -210,11 +228,16 @@ class MMTextField extends StatelessWidget {
       readOnly: readOnly,
       showCursor: showCursor,
       autofocus: autofocus,
+      keyboardAppearance: keyboardAppearance,
       obscureText: obscureText,
+      obscuringCharacter: obscuringCharacter,
       autocorrect: autocorrect,
       smartDashesType: smartDashesType,
       smartQuotesType: smartQuotesType,
       enableSuggestions: enableSuggestions,
+      enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
+      cursorOpacityAnimates: cursorOpacityAnimates,
+      mouseCursor: mouseCursor,
       maxLines: maxLines,
       minLines: minLines,
       expands: expands,
@@ -229,6 +252,7 @@ class MMTextField extends StatelessWidget {
       cursorHeight: cursorHeight,
       cursorRadius: cursorRadius,
       cursorColor: cursorColor,
+      cursorErrorColor: cursorErrorColor,
       selectionControls: selectionControls,
       scrollPadding: scrollPadding,
       enableInteractiveSelection: enableInteractiveSelection,

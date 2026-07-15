@@ -54,4 +54,32 @@ void main() {
     );
     expect(find.byType(TextField), findsOneWidget);
   });
+
+  testWidgets('MMTextField passes through common text field knobs', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: MMTextField(
+            decoration: InputDecoration(),
+            obscureText: true,
+            obscuringCharacter: 'x',
+            keyboardAppearance: Brightness.dark,
+            enableIMEPersonalizedLearning: false,
+            cursorOpacityAnimates: true,
+            mouseCursor: SystemMouseCursors.text,
+          ),
+        ),
+      ),
+    );
+
+    final field = tester.widget<TextField>(find.byType(TextField));
+    expect(field.obscureText, isTrue);
+    expect(field.obscuringCharacter, 'x');
+    expect(field.keyboardAppearance, Brightness.dark);
+    expect(field.enableIMEPersonalizedLearning, isFalse);
+    expect(field.cursorOpacityAnimates, isTrue);
+    expect(field.mouseCursor, SystemMouseCursors.text);
+  });
 }
