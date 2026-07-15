@@ -28,7 +28,7 @@ flutter:
   uses-material-design: true
 
 screenshots:
-  - description: Demo One
+  - description: Showcasing the mixed of myanmar and latin language with the same size visually demo one.
     path: screenshots/demo1.png
-  - description: Demo Two
+  - description: Showcasing the mixed of myanmar and latin language with the same size visually demo two.
     path: screenshots/demo2.png
