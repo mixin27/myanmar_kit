@@ -79,6 +79,14 @@ class _MyanmarKitExampleAppState extends State<MyanmarKitExampleApp> {
                 borderRadius: BorderRadius.circular(24),
               ),
             ),
+            extensions: [
+              MMTextTheme(
+                myanmarFont: myanmarFont,
+                latinFont: latinFont,
+                minScale: _minScale,
+                maxScale: _maxScale,
+              ),
+            ],
             appBarTheme: const AppBarTheme(
               centerTitle: false,
               scrolledUnderElevation: 0,
@@ -86,42 +94,36 @@ class _MyanmarKitExampleAppState extends State<MyanmarKitExampleApp> {
               surfaceTintColor: Colors.transparent,
             ),
           ),
-          home: MMTextConfig(
-            myanmarFont: myanmarFont,
-            latinFont: latinFont,
+          home: _NewsShell(
+            articles: sampleArticles,
+            selectedPreset: _preset,
             minScale: _minScale,
             maxScale: _maxScale,
-            child: _NewsShell(
-              articles: sampleArticles,
-              selectedPreset: _preset,
-              minScale: _minScale,
-              maxScale: _maxScale,
-              bookmarkedIds: _bookmarkedIds,
-              onPresetChanged: (preset) {
-                setState(() {
-                  _preset = preset;
-                });
-              },
-              onMinScaleChanged: (value) {
-                setState(() {
-                  _minScale = value;
-                });
-              },
-              onMaxScaleChanged: (value) {
-                setState(() {
-                  _maxScale = value;
-                });
-              },
-              onToggleBookmark: (articleId) {
-                setState(() {
-                  if (_bookmarkedIds.contains(articleId)) {
-                    _bookmarkedIds.remove(articleId);
-                  } else {
-                    _bookmarkedIds.add(articleId);
-                  }
-                });
-              },
-            ),
+            bookmarkedIds: _bookmarkedIds,
+            onPresetChanged: (preset) {
+              setState(() {
+                _preset = preset;
+              });
+            },
+            onMinScaleChanged: (value) {
+              setState(() {
+                _minScale = value;
+              });
+            },
+            onMaxScaleChanged: (value) {
+              setState(() {
+                _maxScale = value;
+              });
+            },
+            onToggleBookmark: (articleId) {
+              setState(() {
+                if (_bookmarkedIds.contains(articleId)) {
+                  _bookmarkedIds.remove(articleId);
+                } else {
+                  _bookmarkedIds.add(articleId);
+                }
+              });
+            },
           ),
         );
       },
@@ -746,7 +748,7 @@ class _NewsArticleDetailPageState extends State<NewsArticleDetailPage> {
         slivers: [
           SliverAppBar(
             pinned: true,
-            expandedHeight: 280,
+            expandedHeight: 300,
             backgroundColor: widget.article.accent.withValues(alpha: 0.08),
             surfaceTintColor: Colors.transparent,
             flexibleSpace: FlexibleSpaceBar(

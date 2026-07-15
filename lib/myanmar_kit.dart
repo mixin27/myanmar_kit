@@ -12,20 +12,24 @@
 ///
 /// ## Quick start
 ///
-/// Wrap your app with [MMTextConfig] and then use [MMText] instead of `Text`
-/// where mixed Myanmar and Latin content needs visual balancing:
+/// Set app-wide defaults with [MMTextTheme] in `ThemeData.extensions`, or wrap
+/// a subtree with [MMTextConfig] if you prefer an inherited widget:
 ///
 /// ```dart
 /// MaterialApp(
-///   home: MMTextConfig(
-///     myanmarFont: 'Noto Sans Myanmar',
-///     latinFont: 'Roboto',
-///     child: Scaffold(
-///       body: Center(
-///         child: MMText(
-///           text: 'Hello မြန်မာ',
-///           fontSize: 18,
-///         ),
+///   theme: ThemeData(
+///     extensions: [
+///       MMTextTheme(
+///         myanmarFont: 'Noto Sans Myanmar',
+///         latinFont: 'Roboto',
+///       ),
+///     ],
+///   ),
+///   home: Scaffold(
+///     body: Center(
+///       child: MMText(
+///         text: 'Hello မြန်မာ',
+///         fontSize: 18,
 ///       ),
 ///     ),
 ///   ),
@@ -33,7 +37,8 @@
 /// ```
 ///
 /// For rich text, use [MMText.rich] or [MMRichText]. For editing, use
-/// [MMTextField] so Myanmar grapheme clusters stay intact.
+/// [MMTextField] so Myanmar grapheme clusters stay intact. [MMTextConfig]
+/// remains available for local overrides and runtime inspection.
 ///
 /// See the example app for a news-style demo with live `MMTextConfig`
 /// controls and mixed-script article content.
@@ -47,6 +52,7 @@ export 'src/formatting/nrc_formatter.dart';
 export 'src/text/mm_rich_text.dart';
 export 'src/text/mm_text.dart';
 export 'src/text/mm_text_config.dart';
+export 'src/text/mm_text_theme.dart';
 export 'src/text/mm_text_field.dart';
 export 'src/text_utils/grapheme_utils.dart';
 export 'src/text_utils/line_breaker.dart';

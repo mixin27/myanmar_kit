@@ -32,15 +32,21 @@ dependencies:
 
 ## Quick Start
 
-Wrap your app with `MMTextConfig`:
+Set app-wide defaults with `MMTextTheme` in `ThemeData.extensions`:
 
 ```dart
 MaterialApp(
-  home: MMTextConfig(
-    myanmarFont: 'Noto Sans Myanmar',
-    latinFont: 'Roboto',
-    child: const HomePage(),
+  theme: ThemeData(
+    extensions: [
+      MMTextTheme(
+        myanmarFont: 'Noto Sans Myanmar',
+        latinFont: 'Roboto',
+        minScale: 0.8,
+        maxScale: 1.0,
+      ),
+    ],
   ),
+  home: const HomePage(),
 );
 ```
 
@@ -70,6 +76,7 @@ MMTextField(
 - `MMRichText`
 - `MMTextField`
 - `MMTextConfig`
+- `MMTextTheme`
 
 ### Encoding
 

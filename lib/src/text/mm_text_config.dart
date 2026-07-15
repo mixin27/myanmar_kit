@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import 'font_metrics.dart';
+import 'mm_text_theme.dart';
 
 /// Ambient configuration for `myanmar_kit` text widgets.
 class MMTextConfig extends InheritedWidget {
@@ -31,7 +32,20 @@ class MMTextConfig extends InheritedWidget {
   static MMTextConfig of(BuildContext context) {
     final inherited = context
         .dependOnInheritedWidgetOfExactType<MMTextConfig>();
-    return inherited ?? MMTextConfig.adaptive(child: const SizedBox.shrink());
+    if (inherited != null) {
+      return inherited;
+    }
+    final theme = Theme.of(context).extension<MMTextTheme>();
+    if (theme != null) {
+      return MMTextConfig(
+        myanmarFont: theme.myanmarFont,
+        latinFont: theme.latinFont,
+        minScale: theme.minScale,
+        maxScale: theme.maxScale,
+        child: const SizedBox.shrink(),
+      );
+    }
+    return MMTextConfig.adaptive(child: const SizedBox.shrink());
   }
 
   /// Creates a platform-aware default font configuration.
