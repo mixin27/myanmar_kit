@@ -41,7 +41,7 @@ class MyanmarKitExampleApp extends StatefulWidget {
 
 class _MyanmarKitExampleAppState extends State<MyanmarKitExampleApp> {
   FontPairPreset _preset = FontPairPreset.robotoNotoSansMyanmar;
-  double _minScale = 0.8;
+  double _minScale = 0.9;
   double _maxScale = 1.0;
   final Set<String> _bookmarkedIds = <String>{'2', '4'};
 
@@ -746,7 +746,7 @@ class _NewsArticleDetailPageState extends State<NewsArticleDetailPage> {
         slivers: [
           SliverAppBar(
             pinned: true,
-            expandedHeight: 220,
+            expandedHeight: 280,
             backgroundColor: widget.article.accent.withValues(alpha: 0.08),
             surfaceTintColor: Colors.transparent,
             flexibleSpace: FlexibleSpaceBar(
