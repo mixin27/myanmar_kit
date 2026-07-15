@@ -148,12 +148,17 @@ class MMRichText extends StatelessWidget {
   Widget build(BuildContext context) {
     final config = MMTextConfig.of(context);
     final baseStyle = _effectiveTextStyle(context);
+    // Resolve the scaler the same way Text/RichText do by default (falling
+    // back to the ambient MediaQuery), then bake it into every span's
+    // fontSize in _scaleTextSpan. RichText itself always gets noScaling
+    // below so those already-scaled sizes aren't scaled a second time.
+    final resolvedTextScaler = textScaler ?? MediaQuery.textScalerOf(context);
     return RichText(
       text: _applyAmbientStyle(
         context: context,
         span: textSpan,
         config: config,
-        textScaler: textScaler,
+        textScaler: resolvedTextScaler,
         baseStyle: baseStyle,
       ),
       textAlign: textAlign ?? TextAlign.start,
@@ -161,7 +166,7 @@ class MMRichText extends StatelessWidget {
       locale: locale,
       softWrap: softWrap,
       overflow: overflow,
-      textScaler: textScaler ?? TextScaler.noScaling,
+      textScaler: TextScaler.noScaling,
       maxLines: maxLines,
       textWidthBasis: textWidthBasis,
       selectionRegistrar: selectionRegistrar,
@@ -202,7 +207,7 @@ InlineSpan _applyAmbientStyle({
   required BuildContext context,
   required InlineSpan span,
   required MMTextConfig config,
-  required TextScaler? textScaler,
+  required TextScaler textScaler,
   required TextStyle baseStyle,
 }) {
   if (span is TextSpan) {
@@ -215,13 +220,13 @@ TextSpan _scaleTextSpan(
   BuildContext context,
   TextSpan span,
   MMTextConfig config,
-  TextScaler? textScaler,
+  TextScaler textScaler,
   TextStyle baseStyle,
 ) {
   final mergedStyle = baseStyle.merge(span.style);
   final fontSize = mergedStyle.fontSize ?? 14;
   final fontWeight = mergedStyle.fontWeight ?? FontWeight.normal;
-  final scaledBaseSize = textScaler?.scale(fontSize) ?? fontSize;
+  final scaledBaseSize = textScaler.scale(fontSize);
   final scale = FontMetricsScaleCache.instance.getScale(
     myanmarFont: config.myanmarFont,
     latinFont: config.latinFont,

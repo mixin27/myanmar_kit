@@ -273,9 +273,17 @@ class MMText extends StatelessWidget {
     }
 
     final config = MMTextConfig.of(context);
-    final effectiveFontSize =
-        textScaler?.scale(effectiveTextStyle.fontSize ?? 14) ??
-        (effectiveTextStyle.fontSize ?? 14);
+    // Resolve the scaler the same way Text/RichText do by default (falling
+    // back to the ambient MediaQuery) so MMText keeps respecting the
+    // platform's accessibility text-size setting even when the caller
+    // doesn't pass textScaler explicitly. The resolved scaler is baked into
+    // effectiveFontSize below, so it must be applied here exactly once —
+    // RichText itself is always given TextScaler.noScaling further down to
+    // avoid scaling these already-scaled sizes a second time.
+    final resolvedTextScaler = textScaler ?? MediaQuery.textScalerOf(context);
+    final effectiveFontSize = resolvedTextScaler.scale(
+      effectiveTextStyle.fontSize ?? 14,
+    );
     final effectiveStrut =
         strutStyle ??
         StrutStyle.fromTextStyle(effectiveTextStyle, forceStrutHeight: true);
@@ -310,7 +318,10 @@ class MMText extends StatelessWidget {
       locale: locale,
       softWrap: softWrap ?? true,
       overflow: overflow ?? TextOverflow.clip,
-      textScaler: textScaler ?? TextScaler.noScaling,
+      // Always noScaling: resolvedTextScaler was already baked into every
+      // span's fontSize above. Passing a non-identity scaler here as well
+      // would apply it a second time.
+      textScaler: TextScaler.noScaling,
       maxLines: maxLines,
       strutStyle: effectiveStrut,
       textWidthBasis: textWidthBasis ?? TextWidthBasis.parent,
