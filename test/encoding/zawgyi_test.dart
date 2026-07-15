@@ -35,8 +35,6 @@ void main() {
       test(
         'each medial in the chain converts independently inside a syllable',
         () {
-          // A base consonant followed by a Zawgyi medial should only have the
-          // medial re-mapped, not cascade to a different medial entirely.
           expect(zawgyiToUnicode('\u1000\u103B'), '\u1000\u103C');
           expect(zawgyiToUnicode('\u1000\u103C'), '\u1000\u103D');
           expect(zawgyiToUnicode('\u1000\u103D'), '\u1000\u103E');
@@ -53,8 +51,6 @@ void main() {
   );
 
   group('round-tripping', () {
-    // These would have caught the cascading-replacement bug immediately,
-    // since a corrupted forward conversion breaks the round trip.
     const roundTrippableUnicode = [
       '\u1009', // NNA
       '\u1026', // E VOWEL + ASAT ligature
@@ -77,13 +73,41 @@ void main() {
 
   group('realistic sample text', () {
     test('converts a Zawgyi word containing a medial consonant', () {
-      // A common Zawgyi rendering of a consonant + medial-ra + vowel cluster.
-      // Previously, the medial would cascade to the wrong target codepoint.
       final input = '\u1000\u103B\u102D'; // KA + zawgyi medial-ra + vowel I
       final result = zawgyiToUnicode(input);
       expect(result, '\u1000\u103C\u102D');
-      // Sanity check: no leftover Zawgyi-only medial code points remain.
       expect(result.contains('\u103B'), isFalse);
+    });
+  });
+
+  group('detector false-positive regression', () {
+    // Regression coverage: earlier versions scored the mere presence of
+    // U+1031 and U+103B-U+103E, both of which are extremely common in
+    // ordinary, correctly-encoded Unicode Myanmar text. That made the
+    // detector flag nearly all real Myanmar sentences as Zawgyi.
+
+    test('a correct Unicode sentence with common medials is not flagged', () {
+      // "Myanmar is a country in Southeast Asia." - proper Unicode Myanmar,
+      // containing several U+103C/U+1031 occurrences in valid logical order.
+      const sentence =
+          'မြန်မာနိုင်ငံသည် အရှေ့တောင်အာရှတွင် တည်ရှိသော နိုင်ငံတစ်ခု ဖြစ်သည်။';
+      expect(isLikelyZawgyi(sentence), isFalse);
+      expect(zawgyiConfidence(sentence), lessThan(0.45));
+    });
+
+    test('a short correct Unicode greeting is not flagged', () {
+      const greeting = 'မင်္ဂလာပါ၊ နေကောင်းပါသလား။';
+      expect(isLikelyZawgyi(greeting), isFalse);
+    });
+
+    test('U+1031 stored before its consonant (Zawgyi-style visual order) is '
+        'still flagged', () {
+      // Unicode always stores the base consonant before U+1031, even
+      // though U+1031 renders to its left. Storing U+1031 first mimics
+      // Zawgyi's closer-to-visual-order storage and should still score
+      // as meaningful Zawgyi evidence.
+      const zawgyiOrdered = '\u1031\u1000\u1031\u1001\u1031\u1002';
+      expect(isLikelyZawgyi(zawgyiOrdered), isTrue);
     });
   });
 }
