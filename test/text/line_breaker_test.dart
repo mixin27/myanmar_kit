@@ -31,8 +31,7 @@ void main() {
       expect(result.contains('\u1039\u200Bဇ'), isFalse);
     });
 
-    test('does not break a closed syllable apart at its final consonant',
-        () {
+    test('does not break a closed syllable apart at its final consonant', () {
       // "စိမ်း" (green) is a single closed syllable: consonant + vowel
       // sign + a second consonant immediately killed by asat. The killed
       // consonant must stay part of the same syllable, not start a new one.

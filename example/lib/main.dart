@@ -330,17 +330,21 @@ class _NewsFeedTabState extends State<NewsFeedTab> {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = widget.articles.where((article) {
-      final haystack = [
-        article.section,
-        article.title,
-        article.deck,
-        article.bodyParagraphs.join(' '),
-      ].join(' ').toLowerCase();
-      return haystack.contains(_query.toLowerCase());
-    }).toList(growable: false);
+    final filtered = widget.articles
+        .where((article) {
+          final haystack = [
+            article.section,
+            article.title,
+            article.deck,
+            article.bodyParagraphs.join(' '),
+          ].join(' ').toLowerCase();
+          return haystack.contains(_query.toLowerCase());
+        })
+        .toList(growable: false);
 
-    final featured = filtered.isNotEmpty ? filtered.first : widget.articles.first;
+    final featured = filtered.isNotEmpty
+        ? filtered.first
+        : widget.articles.first;
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
@@ -360,7 +364,8 @@ class _NewsFeedTabState extends State<NewsFeedTab> {
         const SizedBox(height: 18),
         _SectionHeader(
           title: 'Top stories',
-          subtitle: 'Mixed-language reporting, live updates, and daily reading.',
+          subtitle:
+              'Mixed-language reporting, live updates, and daily reading.',
         ),
         const SizedBox(height: 12),
         for (final article in filtered.take(4)) ...[
@@ -374,7 +379,8 @@ class _NewsFeedTabState extends State<NewsFeedTab> {
         ],
         _SectionHeader(
           title: 'Latest updates',
-          subtitle: 'Realistic news-card layout with mixed Myanmar and Latin text.',
+          subtitle:
+              'Realistic news-card layout with mixed Myanmar and Latin text.',
         ),
         const SizedBox(height: 12),
         for (final article in filtered.skip(1).take(3)) ...[
@@ -425,7 +431,9 @@ class TopicsTab extends StatelessWidget {
             for (final section in sections)
               _TopicChip(
                 label: section,
-                count: articles.where((article) => article.section == section).length,
+                count: articles
+                    .where((article) => article.section == section)
+                    .length,
               ),
           ],
         ),
@@ -436,9 +444,10 @@ class TopicsTab extends StatelessWidget {
             subtitle: 'Stories currently on the front page.',
           ),
           const SizedBox(height: 12),
-          for (final article in articles
-              .where((article) => article.section == section)
-              .take(2)) ...[
+          for (final article
+              in articles
+                  .where((article) => article.section == section)
+                  .take(2)) ...[
             _StoryCard(
               article: article,
               bookmarked: bookmarkedIds.contains(article.id),
@@ -568,16 +577,11 @@ class _TypographyLabTabState extends State<TypographyLabTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Font pair',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              Text('Font pair', style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 10),
               DropdownButtonFormField<FontPairPreset>(
                 initialValue: widget.selectedPreset,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
+                decoration: const InputDecoration(border: OutlineInputBorder()),
                 items: FontPairPreset.values
                     .map(
                       (preset) => DropdownMenuItem(
@@ -639,10 +643,9 @@ class _TypographyLabTabState extends State<TypographyLabTab> {
           title: 'Stock Text',
           child: Text.rich(
             _newsArticleSpan(
-              baseStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    fontSize: 18,
-                    height: 1.35,
-                  ),
+              baseStyle: Theme.of(
+                context,
+              ).textTheme.bodyLarge!.copyWith(fontSize: 18, height: 1.35),
             ),
           ),
         ),
@@ -678,10 +681,7 @@ class _TypographyLabTabState extends State<TypographyLabTab> {
                 ),
               ),
               const SizedBox(height: 12),
-              MMText(
-                text: 'Live note: ${_noteController.text}',
-                fontSize: 16,
-              ),
+              MMText(text: 'Live note: ${_noteController.text}', fontSize: 16),
             ],
           ),
         ),
@@ -701,11 +701,7 @@ class _TypographyLabTabState extends State<TypographyLabTab> {
                 fontWeight: FontWeight.w700,
               ),
               const SizedBox(height: 8),
-              MMText(
-                text: preview.deck,
-                fontSize: 16,
-                height: 1.45,
-              ),
+              MMText(text: preview.deck, fontSize: 16, height: 1.45),
             ],
           ),
         ),
@@ -786,22 +782,14 @@ class _NewsArticleDetailPageState extends State<NewsArticleDetailPage> {
                     height: 1.08,
                   ),
                   const SizedBox(height: 12),
-                  MMText(
-                    text: widget.article.deck,
-                    fontSize: 17,
-                    height: 1.5,
-                  ),
+                  MMText(text: widget.article.deck, fontSize: 17, height: 1.5),
                   const SizedBox(height: 18),
                   _BodyLabel(
                     text: 'Today’s report mixes English and Myanmar inline.',
                   ),
                   const SizedBox(height: 10),
                   for (final paragraph in widget.article.bodyParagraphs) ...[
-                    MMText(
-                      text: paragraph,
-                      fontSize: 18,
-                      height: 1.5,
-                    ),
+                    MMText(text: paragraph, fontSize: 18, height: 1.5),
                     const SizedBox(height: 14),
                   ],
                   _CalloutCard(
@@ -809,7 +797,9 @@ class _NewsArticleDetailPageState extends State<NewsArticleDetailPage> {
                       TextSpan(
                         style: const TextStyle(fontSize: 17, height: 1.5),
                         children: [
-                          const TextSpan(text: 'Officials said the trial will be '),
+                          const TextSpan(
+                            text: 'Officials said the trial will be ',
+                          ),
                           TextSpan(
                             text: 'measured week by week',
                             style: TextStyle(
@@ -875,10 +865,7 @@ class _TopBanner extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            featured.accent.withValues(alpha: 0.18),
-            Colors.white,
-          ],
+          colors: [featured.accent.withValues(alpha: 0.18), Colors.white],
         ),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(color: featured.accent.withValues(alpha: 0.12)),
@@ -905,11 +892,7 @@ class _TopBanner extends StatelessWidget {
             height: 1.12,
           ),
           const SizedBox(height: 10),
-          MMText(
-            text: featured.deck,
-            fontSize: 16,
-            height: 1.45,
-          ),
+          MMText(text: featured.deck, fontSize: 16, height: 1.45),
           const SizedBox(height: 14),
           Row(
             children: [
@@ -1000,11 +983,7 @@ class _StoryCard extends StatelessWidget {
                 height: 1.18,
               ),
               const SizedBox(height: 8),
-              MMText(
-                text: article.deck,
-                fontSize: 15.5,
-                height: 1.4,
-              ),
+              MMText(text: article.deck, fontSize: 15.5, height: 1.4),
               const SizedBox(height: 14),
               Row(
                 children: [
@@ -1014,10 +993,7 @@ class _StoryCard extends StatelessWidget {
                     color: Colors.black54,
                   ),
                   const Spacer(),
-                  TextButton(
-                    onPressed: onTap,
-                    child: const Text('Open story'),
-                  ),
+                  TextButton(onPressed: onTap, child: const Text('Open story')),
                 ],
               ),
             ],
@@ -1138,11 +1114,7 @@ class _ArticleHero extends StatelessWidget {
                 height: 1.08,
               ),
               const SizedBox(height: 8),
-              MMText(
-                text: article.deck,
-                fontSize: 15.5,
-                height: 1.4,
-              ),
+              MMText(text: article.deck, fontSize: 15.5, height: 1.4),
             ],
           ),
         ),
@@ -1183,9 +1155,7 @@ class _MetaPill extends StatelessWidget {
       label: Text(text),
       side: BorderSide(color: Colors.black.withValues(alpha: 0.08)),
       backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(999),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
     );
   }
 }
@@ -1219,10 +1189,7 @@ class _Badge extends StatelessWidget {
 }
 
 class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({
-    required this.title,
-    required this.subtitle,
-  });
+  const _SectionHeader({required this.title, required this.subtitle});
 
   final String title;
   final String subtitle;
@@ -1234,16 +1201,16 @@ class _SectionHeader extends StatelessWidget {
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 4),
         Text(
           subtitle,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.black87,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: Colors.black87),
         ),
       ],
     );
@@ -1270,10 +1237,7 @@ class _CardShell extends StatelessWidget {
 }
 
 class _ComparisonCard extends StatelessWidget {
-  const _ComparisonCard({
-    required this.title,
-    required this.child,
-  });
+  const _ComparisonCard({required this.title, required this.child});
 
   final String title;
   final Widget child;
@@ -1286,9 +1250,9 @@ class _ComparisonCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 12),
           child,
@@ -1309,9 +1273,9 @@ class _CalloutCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer.withValues(
-              alpha: 0.45,
-            ),
+        color: Theme.of(
+          context,
+        ).colorScheme.primaryContainer.withValues(alpha: 0.45),
         borderRadius: BorderRadius.circular(22),
       ),
       child: child,
@@ -1329,18 +1293,15 @@ class _BodyLabel extends StatelessWidget {
     return Text(
       text,
       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: Colors.black87,
-            fontWeight: FontWeight.w700,
-          ),
+        color: Colors.black87,
+        fontWeight: FontWeight.w700,
+      ),
     );
   }
 }
 
 class _EmptyState extends StatelessWidget {
-  const _EmptyState({
-    required this.title,
-    required this.subtitle,
-  });
+  const _EmptyState({required this.title, required this.subtitle});
 
   final String title;
   final String subtitle;
@@ -1359,9 +1320,9 @@ class _EmptyState extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 8),
           Text(subtitle, style: Theme.of(context).textTheme.bodyMedium),
@@ -1372,10 +1333,7 @@ class _EmptyState extends StatelessWidget {
 }
 
 class _TopicChip extends StatelessWidget {
-  const _TopicChip({
-    required this.label,
-    required this.count,
-  });
+  const _TopicChip({required this.label, required this.count});
 
   final String label;
   final int count;
@@ -1387,9 +1345,7 @@ class _TopicChip extends StatelessWidget {
       avatar: const Icon(Icons.tag, size: 16),
       backgroundColor: Colors.white,
       side: BorderSide(color: Colors.black.withValues(alpha: 0.06)),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(999),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
     );
   }
 }
@@ -1492,7 +1448,8 @@ const sampleArticles = <NewsArticle>[
   NewsArticle(
     id: '5',
     section: 'Education',
-    title: 'Reading drive sends new books to school libraries across the region',
+    title:
+        'Reading drive sends new books to school libraries across the region',
     deck:
         'Teachers want news-style updates and library signs that show English titles beside မြန်မာ descriptions for easier browsing.',
     publishedLabel: '1:30 PM',
