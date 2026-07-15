@@ -41,6 +41,7 @@ class MMRichText extends StatelessWidget {
     this.maxLines,
     this.semanticsLabel,
     this.textWidthBasis = TextWidthBasis.parent,
+    this.textHeightBehavior,
     this.selectionRegistrar,
     this.selectionColor,
   });
@@ -138,6 +139,9 @@ class MMRichText extends StatelessWidget {
   /// Mirrors [TextWidthBasis].
   final TextWidthBasis textWidthBasis;
 
+  /// Mirrors [Text.textHeightBehavior].
+  final TextHeightBehavior? textHeightBehavior;
+
   /// Mirrors [RichText.selectionRegistrar].
   final SelectionRegistrar? selectionRegistrar;
 
@@ -168,6 +172,7 @@ class MMRichText extends StatelessWidget {
       overflow: overflow,
       textScaler: TextScaler.noScaling,
       maxLines: maxLines,
+      textHeightBehavior: textHeightBehavior,
       textWidthBasis: textWidthBasis,
       selectionRegistrar: selectionRegistrar,
       selectionColor: selectionColor,

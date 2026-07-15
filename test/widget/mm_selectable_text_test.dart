@@ -35,4 +35,27 @@ void main() {
 
     expect(find.byType(SelectableText), findsOneWidget);
   });
+
+  testWidgets('MMSelectableText accepts textHeightBehavior directly', (
+    tester,
+  ) async {
+    const behavior = TextHeightBehavior(
+      applyHeightToFirstAscent: false,
+      applyHeightToLastDescent: false,
+    );
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MMTextConfig(
+          child: Scaffold(
+            body: MMSelectableText(text: 'Hello', textHeightBehavior: behavior),
+          ),
+        ),
+      ),
+    );
+
+    final selectable = tester.widget<SelectableText>(
+      find.byType(SelectableText),
+    );
+    expect(selectable.textHeightBehavior, behavior);
+  });
 }

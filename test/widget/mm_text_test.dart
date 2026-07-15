@@ -36,6 +36,25 @@ void main() {
     expect(find.byType(RichText), findsOneWidget);
   });
 
+  testWidgets('MMText accepts textHeightBehavior directly', (tester) async {
+    const behavior = TextHeightBehavior(
+      applyHeightToFirstAscent: false,
+      applyHeightToLastDescent: false,
+    );
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MMTextConfig(
+          child: Scaffold(
+            body: MMText(text: 'Hello', textHeightBehavior: behavior),
+          ),
+        ),
+      ),
+    );
+
+    final text = tester.widget<Text>(find.byType(Text));
+    expect(text.textHeightBehavior, behavior);
+  });
+
   testWidgets('MMRichText accepts fontSize directly', (tester) async {
     await tester.pumpWidget(
       const MaterialApp(
@@ -51,6 +70,28 @@ void main() {
       ),
     );
     expect(find.byType(RichText), findsOneWidget);
+  });
+
+  testWidgets('MMRichText accepts textHeightBehavior directly', (tester) async {
+    const behavior = TextHeightBehavior(
+      applyHeightToFirstAscent: false,
+      applyHeightToLastDescent: false,
+    );
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MMTextConfig(
+          child: Scaffold(
+            body: MMRichText(
+              textSpan: TextSpan(text: 'Hello'),
+              textHeightBehavior: behavior,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    final richText = tester.widget<RichText>(find.byType(RichText));
+    expect(richText.textHeightBehavior, behavior);
   });
 
   group('textScaler is applied exactly once', () {

@@ -1,3 +1,6 @@
+import 'dart:ui' as ui;
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../text/font_metrics.dart';
@@ -10,6 +13,7 @@ class MMSelectableText extends StatelessWidget {
   const MMSelectableText({
     super.key,
     required this.text,
+    this.focusNode,
     this.style,
     this.color,
     this.backgroundColor,
@@ -35,16 +39,37 @@ class MMSelectableText extends StatelessWidget {
     this.textAlign,
     this.textDirection,
     this.locale,
-    this.maxLines,
-    this.semanticsLabel,
     this.textScaler,
+    this.showCursor = false,
+    this.autofocus = false,
+    this.minLines,
+    this.maxLines,
+    this.cursorWidth = 2.0,
+    this.cursorHeight,
+    this.cursorRadius,
+    this.cursorColor,
     this.selectionColor,
+    this.selectionHeightStyle,
+    this.selectionWidthStyle,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.enableInteractiveSelection = true,
+    this.selectionControls,
+    this.onTap,
+    this.scrollPhysics,
+    this.scrollBehavior,
+    this.semanticsLabel,
+    this.textHeightBehavior,
+    this.textWidthBasis,
+    this.onSelectionChanged,
+    this.contextMenuBuilder,
+    this.magnifierConfiguration,
   }) : textSpan = null;
 
   /// Creates a rich-text selectable variant of `MMSelectableText`.
   const MMSelectableText.rich(
     this.textSpan, {
     super.key,
+    this.focusNode,
     this.style,
     this.color,
     this.backgroundColor,
@@ -66,21 +91,44 @@ class MMSelectableText extends StatelessWidget {
     this.shadows,
     this.textBaseline,
     this.leadingDistribution,
+    this.strutStyle,
     this.textAlign,
     this.textDirection,
     this.locale,
-    this.maxLines,
-    this.semanticsLabel,
     this.textScaler,
+    this.showCursor = false,
+    this.autofocus = false,
+    this.minLines,
+    this.maxLines,
+    this.cursorWidth = 2.0,
+    this.cursorHeight,
+    this.cursorRadius,
+    this.cursorColor,
     this.selectionColor,
-  }) : text = null,
-       strutStyle = null;
+    this.selectionHeightStyle,
+    this.selectionWidthStyle,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.enableInteractiveSelection = true,
+    this.selectionControls,
+    this.onTap,
+    this.scrollPhysics,
+    this.scrollBehavior,
+    this.semanticsLabel,
+    this.textHeightBehavior,
+    this.textWidthBasis,
+    this.onSelectionChanged,
+    this.contextMenuBuilder,
+    this.magnifierConfiguration,
+  }) : text = null;
 
   /// Plain text to render.
   final String? text;
 
   /// Rich text span tree to render.
   final InlineSpan? textSpan;
+
+  /// Mirrors [TextField.focusNode].
+  final FocusNode? focusNode;
 
   /// Mirrors [Text.style].
   final TextStyle? style;
@@ -157,17 +205,77 @@ class MMSelectableText extends StatelessWidget {
   /// Mirrors [Text.locale].
   final Locale? locale;
 
-  /// Mirrors [Text.maxLines].
-  final int? maxLines;
-
-  /// Mirrors [Text.semanticsLabel].
-  final String? semanticsLabel;
-
   /// Mirrors [Text.textScaler].
   final TextScaler? textScaler;
 
+  /// Mirrors [SelectableText.showCursor].
+  final bool showCursor;
+
+  /// Mirrors [SelectableText.autofocus].
+  final bool autofocus;
+
+  /// Mirrors [SelectableText.minLines].
+  final int? minLines;
+
+  /// Mirrors [SelectableText.maxLines].
+  final int? maxLines;
+
+  /// Mirrors [SelectableText.cursorWidth].
+  final double cursorWidth;
+
+  /// Mirrors [SelectableText.cursorHeight].
+  final double? cursorHeight;
+
+  /// Mirrors [SelectableText.cursorRadius].
+  final Radius? cursorRadius;
+
+  /// Mirrors [SelectableText.cursorColor].
+  final Color? cursorColor;
+
   /// Mirrors [SelectableText.selectionColor].
   final Color? selectionColor;
+
+  /// Mirrors [SelectableText.selectionHeightStyle].
+  final ui.BoxHeightStyle? selectionHeightStyle;
+
+  /// Mirrors [SelectableText.selectionWidthStyle].
+  final ui.BoxWidthStyle? selectionWidthStyle;
+
+  /// Mirrors [SelectableText.dragStartBehavior].
+  final DragStartBehavior dragStartBehavior;
+
+  /// Mirrors [SelectableText.enableInteractiveSelection].
+  final bool enableInteractiveSelection;
+
+  /// Mirrors [SelectableText.selectionControls].
+  final TextSelectionControls? selectionControls;
+
+  /// Mirrors [SelectableText.onTap].
+  final GestureTapCallback? onTap;
+
+  /// Mirrors [SelectableText.scrollPhysics].
+  final ScrollPhysics? scrollPhysics;
+
+  /// Mirrors [SelectableText.scrollBehavior].
+  final ScrollBehavior? scrollBehavior;
+
+  /// Mirrors [SelectableText.semanticsLabel].
+  final String? semanticsLabel;
+
+  /// Mirrors [SelectableText.textHeightBehavior].
+  final TextHeightBehavior? textHeightBehavior;
+
+  /// Mirrors [SelectableText.textWidthBasis].
+  final TextWidthBasis? textWidthBasis;
+
+  /// Mirrors [SelectableText.onSelectionChanged].
+  final SelectionChangedCallback? onSelectionChanged;
+
+  /// Mirrors [SelectableText.contextMenuBuilder].
+  final EditableTextContextMenuBuilder? contextMenuBuilder;
+
+  /// Mirrors [SelectableText.magnifierConfiguration].
+  final TextMagnifierConfiguration? magnifierConfiguration;
 
   TextStyle _effectiveTextStyle(BuildContext context) {
     final inheritedStyle = DefaultTextStyle.of(context).style;
@@ -208,13 +316,34 @@ class MMSelectableText extends StatelessWidget {
     if (!containsMyanmar(value)) {
       return SelectableText(
         value,
+        focusNode: focusNode,
         style: effectiveTextStyle,
         textAlign: textAlign,
         textDirection: textDirection,
-        maxLines: maxLines,
-        semanticsLabel: semanticsLabel,
         textScaler: textScaler,
+        showCursor: showCursor,
+        autofocus: autofocus,
+        minLines: minLines,
+        maxLines: maxLines,
+        cursorWidth: cursorWidth,
+        cursorHeight: cursorHeight,
+        cursorRadius: cursorRadius,
+        cursorColor: cursorColor,
         selectionColor: selectionColor,
+        selectionHeightStyle: selectionHeightStyle,
+        selectionWidthStyle: selectionWidthStyle,
+        dragStartBehavior: dragStartBehavior,
+        enableInteractiveSelection: enableInteractiveSelection,
+        selectionControls: selectionControls,
+        onTap: onTap,
+        scrollPhysics: scrollPhysics,
+        scrollBehavior: scrollBehavior,
+        semanticsLabel: semanticsLabel,
+        textHeightBehavior: textHeightBehavior,
+        textWidthBasis: textWidthBasis,
+        onSelectionChanged: onSelectionChanged,
+        contextMenuBuilder: contextMenuBuilder,
+        magnifierConfiguration: magnifierConfiguration,
       );
     }
 
@@ -238,13 +367,34 @@ class MMSelectableText extends StatelessWidget {
           baseStyle: baseStyle,
         ),
       ),
+      focusNode: focusNode,
       style: baseStyle,
-      textAlign: textAlign ?? TextAlign.start,
-      textDirection: textDirection ?? Directionality.maybeOf(context),
-      maxLines: maxLines,
-      semanticsLabel: semanticsLabel,
+      textAlign: textAlign,
+      textDirection: textDirection,
       textScaler: TextScaler.noScaling,
+      showCursor: showCursor,
+      autofocus: autofocus,
+      minLines: minLines,
+      maxLines: maxLines,
+      cursorWidth: cursorWidth,
+      cursorHeight: cursorHeight,
+      cursorRadius: cursorRadius,
+      cursorColor: cursorColor,
       selectionColor: selectionColor,
+      selectionHeightStyle: selectionHeightStyle,
+      selectionWidthStyle: selectionWidthStyle,
+      dragStartBehavior: dragStartBehavior,
+      enableInteractiveSelection: enableInteractiveSelection,
+      selectionControls: selectionControls,
+      onTap: onTap,
+      scrollPhysics: scrollPhysics,
+      scrollBehavior: scrollBehavior,
+      semanticsLabel: semanticsLabel,
+      textHeightBehavior: textHeightBehavior,
+      textWidthBasis: textWidthBasis ?? TextWidthBasis.parent,
+      onSelectionChanged: onSelectionChanged,
+      contextMenuBuilder: contextMenuBuilder,
+      magnifierConfiguration: magnifierConfiguration,
     );
   }
 }

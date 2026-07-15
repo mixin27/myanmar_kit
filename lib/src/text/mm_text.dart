@@ -42,6 +42,7 @@ class MMText extends StatelessWidget {
     this.maxLines,
     this.semanticsLabel,
     this.textWidthBasis,
+    this.textHeightBehavior,
     this.selectionColor,
   }) : textSpan = null;
 
@@ -79,6 +80,7 @@ class MMText extends StatelessWidget {
     this.maxLines,
     this.semanticsLabel,
     this.textWidthBasis,
+    this.textHeightBehavior,
     this.selectionColor,
   }) : text = null,
        strutStyle = null;
@@ -182,6 +184,9 @@ class MMText extends StatelessWidget {
   /// Mirrors [Text.textWidthBasis].
   final TextWidthBasis? textWidthBasis;
 
+  /// Mirrors [Text.textHeightBehavior].
+  final TextHeightBehavior? textHeightBehavior;
+
   /// Mirrors [Text.selectionColor].
   final Color? selectionColor;
 
@@ -248,6 +253,7 @@ class MMText extends StatelessWidget {
         maxLines: maxLines,
         semanticsLabel: semanticsLabel,
         textWidthBasis: textWidthBasis ?? TextWidthBasis.parent,
+        textHeightBehavior: textHeightBehavior,
         selectionColor: selectionColor,
       );
     }
@@ -268,6 +274,7 @@ class MMText extends StatelessWidget {
         maxLines: maxLines,
         semanticsLabel: semanticsLabel,
         textWidthBasis: textWidthBasis,
+        textHeightBehavior: textHeightBehavior,
         selectionColor: selectionColor,
       );
     }
@@ -325,6 +332,7 @@ class MMText extends StatelessWidget {
       maxLines: maxLines,
       strutStyle: effectiveStrut,
       textWidthBasis: textWidthBasis ?? TextWidthBasis.parent,
+      textHeightBehavior: textHeightBehavior,
       selectionColor: selectionColor,
     );
     return semanticsLabel == null
