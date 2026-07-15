@@ -6,6 +6,7 @@ edit Myanmar text mixed with Latin text.
 It focuses on:
 
 - Myanmar-aware text sizing with `MMText`
+- Selectable mixed-script text with `MMSelectableText`
 - Grapheme-safe text utilities
 - Heuristic Zawgyi detection and conversion
 - Myanmar digit conversion, NRC formatting, and lightweight collation helpers
@@ -74,6 +75,7 @@ MMTextField(
 - `MMText`
 - `MMText.rich`
 - `MMRichText`
+- `MMSelectableText`
 - `MMTextField`
 - `MMTextConfig`
 - `MMTextTheme`

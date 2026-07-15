@@ -662,6 +662,18 @@ class _TypographyLabTabState extends State<TypographyLabTab> {
             height: 1.35,
           ),
         ),
+        const SizedBox(height: 12),
+        _ComparisonCard(
+          title: 'MMSelectableText.rich',
+          child: MMSelectableText.rich(
+            _newsArticleSpan(
+              baseStyle: const TextStyle(fontSize: 18, height: 1.35),
+            ),
+            fontSize: 18,
+            height: 1.35,
+            selectionColor: const Color(0xFF7C3AED).withValues(alpha: 0.25),
+          ),
+        ),
         const SizedBox(height: 16),
         _SectionHeader(
           title: 'Built-in field support',
@@ -795,7 +807,7 @@ class _NewsArticleDetailPageState extends State<NewsArticleDetailPage> {
                     const SizedBox(height: 14),
                   ],
                   _CalloutCard(
-                    child: MMText.rich(
+                    child: MMSelectableText.rich(
                       TextSpan(
                         style: const TextStyle(fontSize: 17, height: 1.5),
                         children: [
@@ -815,6 +827,9 @@ class _NewsArticleDetailPageState extends State<NewsArticleDetailPage> {
                           ),
                         ],
                       ),
+                      selectionColor: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.25),
                     ),
                   ),
                   const SizedBox(height: 20),

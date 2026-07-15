@@ -3,7 +3,7 @@
 ///
 /// The package focuses on practical text handling for real apps:
 ///
-/// - Myanmar-aware text sizing with `MMText` and `MMRichText`
+/// - Myanmar-aware text sizing with `MMText`, `MMRichText`, and `MMSelectableText`
 /// - Grapheme-safe text editing with `MMTextField`
 /// - Ambient font configuration with `MMTextConfig`
 /// - Zawgyi detection and conversion helpers
@@ -39,6 +39,7 @@
 /// For rich text, use [MMText.rich] or [MMRichText]. For editing, use
 /// [MMTextField] so Myanmar grapheme clusters stay intact. [MMTextConfig]
 /// remains available for local overrides and runtime inspection.
+/// Use [MMSelectableText] when the content should remain selectable.
 ///
 /// See the example app for a news-style demo with live `MMTextConfig`
 /// controls and mixed-script article content.
@@ -52,6 +53,7 @@ export 'src/formatting/nrc_formatter.dart';
 export 'src/text/mm_rich_text.dart';
 export 'src/text/mm_text.dart';
 export 'src/text/mm_text_config.dart';
+export 'src/text/mm_selectable_text.dart';
 export 'src/text/mm_text_theme.dart';
 export 'src/text/mm_text_field.dart';
 export 'src/text_utils/grapheme_utils.dart';
