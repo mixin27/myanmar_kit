@@ -35,25 +35,68 @@ const List<MapEntry<String, String>> _uni2zg = [
   MapEntry('\u1004\u103A\u1039', '\u1064'),
 ];
 
+/// [_zg2uni] sorted by descending key length so multi-character sequences
+/// (e.g. `\u1025\u103A`) are matched before their single-character prefixes
+/// (e.g. `\u1025`) at the same text position.
+final List<MapEntry<String, String>> _zg2uniByLength =
+    List<MapEntry<String, String>>.of(_zg2uni)
+      ..sort((a, b) => b.key.length.compareTo(a.key.length));
+
+/// [_uni2zg] sorted by descending key length, for the same reason.
+final List<MapEntry<String, String>> _uni2zgByLength =
+    List<MapEntry<String, String>>.of(_uni2zg)
+      ..sort((a, b) => b.key.length.compareTo(a.key.length));
+
+/// Applies [pairs] to [text] in a single left-to-right pass over the
+/// *original* text.
+///
+/// Earlier implementations chained multiple `String.replaceAll` calls, each
+/// one scanning the output of the previous call. Because several patterns
+/// here overlap (for example `\u103B -> \u103C` followed by
+/// `\u103C -> \u103D`), that approach re-matched characters that had already
+/// been produced by an earlier substitution, cascading a single character
+/// through multiple unrelated replacements (`\u103B` ended up as `\u103E`
+/// instead of the intended `\u103C`).
+///
+/// Resolving all patterns in one pass over the original text — trying the
+/// longest pattern first at each position — means every input character is
+/// consumed and replaced at most once, so replacement outputs are never
+/// re-scanned for further matches.
+String _applyOrderedReplacements(
+  String text,
+  List<MapEntry<String, String>> patternsByDescendingLength,
+) {
+  final buffer = StringBuffer();
+  var i = 0;
+  final length = text.length;
+  while (i < length) {
+    MapEntry<String, String>? match;
+    for (final pair in patternsByDescendingLength) {
+      if (text.startsWith(pair.key, i)) {
+        match = pair;
+        break;
+      }
+    }
+    if (match != null) {
+      buffer.write(match.value);
+      i += match.key.length;
+    } else {
+      buffer.write(text[i]);
+      i += 1;
+    }
+  }
+  return buffer.toString();
+}
+
 /// Converts common Zawgyi sequences to Unicode Myanmar.
 ///
-/// This is a pragmatic, ordered replacement pipeline and does not claim full
-/// coverage of all historical Zawgyi edge cases.
-String zawgyiToUnicode(String text) {
-  var result = text;
-  for (final entry in _zg2uni) {
-    result = result.replaceAll(entry.key, entry.value);
-  }
-  return result;
-}
+/// This is a pragmatic, single-pass, longest-match-first replacement and
+/// does not claim full coverage of all historical Zawgyi edge cases.
+String zawgyiToUnicode(String text) =>
+    _applyOrderedReplacements(text, _zg2uniByLength);
 
 /// Converts common Unicode Myanmar sequences to Zawgyi.
 ///
 /// This is only intended for legacy interop and round-tripping best effort.
-String unicodeToZawgyi(String text) {
-  var result = text;
-  for (final entry in _uni2zg) {
-    result = result.replaceAll(entry.key, entry.value);
-  }
-  return result;
-}
+String unicodeToZawgyi(String text) =>
+    _applyOrderedReplacements(text, _uni2zgByLength);
